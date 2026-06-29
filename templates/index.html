@@ -13,7 +13,7 @@
     <input
         type="text"
         name="niche"
-        placeholder="Enter niche"
+        placeholder="Niche"
         required>
 
     <br><br>
@@ -21,7 +21,7 @@
     <input
         type="text"
         name="goal"
-        placeholder="Enter goal"
+        placeholder="Goal"
         required>
 
     <br><br>
@@ -45,8 +45,22 @@
 
     <br><br>
 
-    <button id="btn" type="submit">
-        Generate Hooks
+    <button
+        id="premiumBtn"
+        type="submit"
+        name="mode"
+        value="premium">
+        Generate 3 Premium Hooks
+    </button>
+
+    <br><br>
+
+    <button
+        id="moreBtn"
+        type="submit"
+        name="mode"
+        value="more">
+        Generate 7 More Hooks
     </button>
 
     <p id="loading" style="display:none;">
@@ -63,7 +77,6 @@
 
 <script>
 document.querySelector("form").addEventListener("submit", function () {
-    document.getElementById("btn").disabled = true;
     document.getElementById("loading").style.display = "block";
 });
 </script>
