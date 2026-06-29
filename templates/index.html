@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Creator Engine</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
 
@@ -25,15 +26,36 @@
 
     <br><br>
 
-    <button type="submit">
+    <select name="platform">
+        <option>Instagram Reels</option>
+        <option>TikTok</option>
+        <option>YouTube Shorts</option>
+    </select>
+
+    <br><br>
+
+    <button id="btn" type="submit">
         Generate Hooks
     </button>
 
+    <p id="loading" style="display:none;">
+        Generating hooks...
+    </p>
+
 </form>
 
-<br>
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
 
 <pre>{{ hooks }}</pre>
+
+<script>
+document.querySelector("form").addEventListener("submit", function () {
+    document.getElementById("btn").disabled = true;
+    document.getElementById("loading").style.display = "block";
+});
+</script>
 
 </body>
 </html>
