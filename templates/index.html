@@ -3,6 +3,30 @@
 <head>
     <title>Creator Engine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body{
+            font-family: Arial;
+            max-width:800px;
+            margin:auto;
+            padding:20px;
+        }
+
+        input, select, button, textarea{
+            width:100%;
+            padding:12px;
+            margin-top:10px;
+            box-sizing:border-box;
+        }
+
+        .box{
+            border:1px solid #ddd;
+            padding:15px;
+            border-radius:10px;
+            margin-top:20px;
+            white-space:pre-wrap;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,18 +37,14 @@
     <input type="hidden" name="action" value="hooks">
 
     <input type="text" name="niche" placeholder="Niche" required>
-    <br><br>
 
     <input type="text" name="goal" placeholder="Goal" required>
-    <br><br>
 
     <select name="platform">
         <option>Instagram Reels</option>
         <option>TikTok</option>
         <option>YouTube Shorts</option>
     </select>
-
-    <br><br>
 
     <select name="hook_type">
         <option>Curiosity</option>
@@ -35,29 +55,35 @@
         <option>Problem/Solution</option>
     </select>
 
-    <br><br>
-
-    <button
-        type="submit"
-        name="mode"
-        value="premium">
+    <button type="submit"
+            name="mode"
+            value="premium">
         Generate 3 Premium Hooks
     </button>
 
-    <br><br>
-
-    <button
-        type="submit"
-        name="mode"
-        value="more">
+    <button type="submit"
+            name="mode"
+            value="more">
         Generate 7 More Hooks
     </button>
 
 </form>
 
 {% if hooks %}
+<div class="box">
 <h2>Hooks</h2>
-<pre>{{ hooks }}</pre>
+
+<pre id="hooksText">{{ hooks }}</pre>
+
+<button onclick="copyHooks()">
+Copy Hooks
+</button>
+
+<button onclick="useForScript()">
+Use Hooks For Script
+</button>
+
+</div>
 {% endif %}
 
 <hr>
@@ -66,16 +92,16 @@
 
 <form method="POST">
 
-    <input type="hidden" name="action" value="script">
+    <input type="hidden"
+           name="action"
+           value="script">
 
     <textarea
+        id="selected_hook"
         name="selected_hook"
-        placeholder="Paste your selected hook here"
-        rows="5"
-        cols="50"
+        rows="6"
+        placeholder="Paste or select hook here"
         required></textarea>
-
-    <br><br>
 
     <button type="submit">
         Generate Script
@@ -84,13 +110,46 @@
 </form>
 
 {% if script %}
+<div class="box">
 <h2>Script</h2>
 <pre>{{ script }}</pre>
+</div>
 {% endif %}
 
 {% if error %}
-<p>{{ error }}</p>
+<div class="box">
+{{ error }}
+</div>
 {% endif %}
+
+<script>
+function copyHooks() {
+    const text =
+        document.getElementById(
+            "hooksText"
+        ).innerText;
+
+    navigator.clipboard.writeText(text);
+
+    alert("Hooks copied!");
+}
+
+function useForScript() {
+    const text =
+        document.getElementById(
+            "hooksText"
+        ).innerText;
+
+    document.getElementById(
+        "selected_hook"
+    ).value = text;
+
+    window.scrollTo(
+        0,
+        document.body.scrollHeight
+    );
+}
+</script>
 
 </body>
 </html>
