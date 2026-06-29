@@ -3,10 +3,39 @@
 <head>
     <title>Creator Engine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body{
+            font-family: Arial;
+            padding:20px;
+            max-width:700px;
+            margin:auto;
+        }
+
+        input,select,button{
+            width:100%;
+            padding:12px;
+            margin-top:10px;
+            font-size:16px;
+        }
+
+        #result{
+            white-space:pre-wrap;
+            border:1px solid #ddd;
+            padding:15px;
+            margin-top:20px;
+            border-radius:10px;
+        }
+
+        #copyBtn{
+            margin-top:15px;
+            display:none;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Creator Engine</h1>
+<h1>Creator Engine 🚀</h1>
 
 <form method="POST">
 
@@ -16,23 +45,17 @@
         placeholder="Niche"
         required>
 
-    <br><br>
-
     <input
         type="text"
         name="goal"
         placeholder="Goal"
         required>
 
-    <br><br>
-
     <select name="platform">
         <option>Instagram Reels</option>
         <option>TikTok</option>
         <option>YouTube Shorts</option>
     </select>
-
-    <br><br>
 
     <select name="hook_type">
         <option>Curiosity</option>
@@ -43,20 +66,14 @@
         <option>Problem/Solution</option>
     </select>
 
-    <br><br>
-
     <button
-        id="premiumBtn"
         type="submit"
         name="mode"
         value="premium">
         Generate 3 Premium Hooks
     </button>
 
-    <br><br>
-
     <button
-        id="moreBtn"
         type="submit"
         name="mode"
         value="more">
@@ -73,11 +90,32 @@
 <p>{{ error }}</p>
 {% endif %}
 
-<pre>{{ hooks }}</pre>
+<div id="result">{{ hooks }}</div>
+
+<button id="copyBtn">
+    Copy Hooks
+</button>
 
 <script>
 document.querySelector("form").addEventListener("submit", function () {
     document.getElementById("loading").style.display = "block";
+});
+
+const result = document.getElementById("result");
+const copyBtn = document.getElementById("copyBtn");
+
+if(result.innerText.trim() !== ""){
+    copyBtn.style.display = "block";
+}
+
+copyBtn.addEventListener("click", function () {
+    navigator.clipboard.writeText(result.innerText);
+
+    copyBtn.innerText = "Copied ✅";
+
+    setTimeout(function(){
+        copyBtn.innerText = "Copy Hooks";
+    },2000);
 });
 </script>
 
