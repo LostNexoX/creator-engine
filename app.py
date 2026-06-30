@@ -1,4 +1,5 @@
 import os
+import traceback
 from flask import Flask
 from openai import OpenAI
 
@@ -7,7 +8,7 @@ app = Flask(__name__)
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
     api_key=os.getenv("Meta"),
-    timeout=10
+    timeout=15
 )
 
 @app.route("/")
@@ -17,11 +18,10 @@ def home():
 @app.route("/test")
 def test():
     try:
-        return "Before API call..."
-    except Exception as e:
-        return str(e)
+        models = client.models.list()
+        return f"<pre>{models}</pre>"
+    except Exception:
+        return f"<pre>{traceback.format_exc()}</pre>"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-response = client.models.list()
-return str(response)
