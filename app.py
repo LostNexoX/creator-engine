@@ -1,4 +1,6 @@
 import os
+import json
+from datetime import datetime
 from flask import Flask, render_template, request
 from openai import OpenAI
 
@@ -8,6 +10,26 @@ client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
     api_key=os.getenv("Meta")
 )
+
+
+def load_history():
+    try:
+        with open("history.json", "r") as f:
+            return json.load(f)
+    except:
+        return []
+
+
+def save_history(item):
+    history = load_history()
+
+    history.insert(0, item)
+
+    history = history[:20]
+
+    with open("history.json", "w") as f:
+        json.dump(history, f, indent=2)
+
 
 @app.route("/", methods=["GET", "POST"])
 def home():
@@ -21,6 +43,7 @@ def home():
             action = request.form.get("action")
 
             if action == "hooks":
+
                 niche = request.form["niche"]
                 goal = request.form["goal"]
                 platform = request.form["platform"]
@@ -59,7 +82,10 @@ Number each hook from 1 to 7.
                 response = client.chat.completions.create(
                     model="meta/llama-3.3-70b-instruct",
                     messages=[
-                        {"role": "user", "content": prompt}
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
                     ],
                     max_tokens=max_tokens,
                     temperature=0.7
@@ -67,9 +93,22 @@ Number each hook from 1 to 7.
 
                 hooks = response.choices[0].message.content
 
+                save_history({
+                    "date": datetime.now().strftime(
+                        "%d-%m-%Y %H:%M"
+                    ),
+                    "niche": niche,
+                    "goal": goal,
+                    "platform": platform,
+                    "hook_type": hook_type,
+                    "hooks": hooks
+                })
+
             elif action == "script":
 
-                selected_hook = request.form["selected_hook"]
+                selected_hook = request.form[
+                    "selected_hook"
+                ]
 
                 prompt = f"""
 Write a highly engaging 30-second short video script.
@@ -78,32 +117,46 @@ Hook:
 {selected_hook}
 
 Requirements:
-- Keep it conversational.
-- Add a strong payoff.
+- Conversational.
+- Strong payoff.
 - Suitable for Instagram Reels and TikTok.
 """
 
                 response = client.chat.completions.create(
                     model="meta/llama-3.3-70b-instruct",
                     messages=[
-                        {"role": "user", "content": prompt}
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
                     ],
                     max_tokens=500,
                     temperature=0.7
                 )
 
-                script = response.choices[0].message.content
+                script = (
+                    response
+                    .choices[0]
+                    .message
+                    .content
+                )
 
     except Exception as e:
         error = str(e)
+
+    history = load_history()
 
     return render_template(
         "index.html",
         hooks=hooks,
         script=script,
-        error=error
+        error=error,
+        history=history
     )
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=5000
+    )
