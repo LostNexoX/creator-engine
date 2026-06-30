@@ -142,7 +142,9 @@ Requirements:
                 )
 
     except Exception as e:
-        error = str(e)
+    import traceback
+    error = traceback.format_exc()
+    print(error)
 
     history = load_history()
 
