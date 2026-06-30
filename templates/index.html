@@ -2,17 +2,18 @@
 <html>
 <head>
     <title>Creator Engine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
     <style>
         body{
-            font-family: Arial;
+            font-family:Arial;
             max-width:800px;
             margin:auto;
             padding:20px;
         }
 
-        input, select, button, textarea{
+        input,select,button,textarea{
             width:100%;
             padding:12px;
             margin-top:10px;
@@ -21,8 +22,8 @@
 
         .box{
             border:1px solid #ddd;
-            padding:15px;
             border-radius:10px;
+            padding:15px;
             margin-top:20px;
             white-space:pre-wrap;
         }
@@ -34,78 +35,75 @@
 
 <form method="POST">
 
-    <input type="hidden" name="action" value="hooks">
+<input type="hidden"
+       name="action"
+       value="hooks">
 
-    <input type="text" name="niche" placeholder="Niche" required>
+<input type="text"
+       name="niche"
+       placeholder="Niche"
+       required>
 
-    <input type="text" name="goal" placeholder="Goal" required>
+<input type="text"
+       name="goal"
+       placeholder="Goal"
+       required>
 
-    <select name="platform">
-        <option>Instagram Reels</option>
-        <option>TikTok</option>
-        <option>YouTube Shorts</option>
-    </select>
+<select name="platform">
+    <option>Instagram Reels</option>
+    <option>TikTok</option>
+    <option>YouTube Shorts</option>
+</select>
 
-    <select name="hook_type">
-        <option>Curiosity</option>
-        <option>Controversial</option>
-        <option>Story</option>
-        <option>Fear</option>
-        <option>Authority</option>
-        <option>Problem/Solution</option>
-    </select>
+<select name="hook_type">
+    <option>Curiosity</option>
+    <option>Controversial</option>
+    <option>Story</option>
+    <option>Fear</option>
+    <option>Authority</option>
+    <option>Problem/Solution</option>
+</select>
 
-    <button type="submit"
-            name="mode"
-            value="premium">
-        Generate 3 Premium Hooks
-    </button>
+<button
+    type="submit"
+    name="mode"
+    value="premium">
+    Generate 3 Premium Hooks
+</button>
 
-    <button type="submit"
-            name="mode"
-            value="more">
-        Generate 7 More Hooks
-    </button>
+<button
+    type="submit"
+    name="mode"
+    value="more">
+    Generate 7 More Hooks
+</button>
 
 </form>
 
 {% if hooks %}
 <div class="box">
 <h2>Hooks</h2>
-
-<pre id="hooksText">{{ hooks }}</pre>
-
-<button onclick="copyHooks()">
-Copy Hooks
-</button>
-
-<button onclick="useForScript()">
-Use Hooks For Script
-</button>
-
+<pre>{{ hooks }}</pre>
 </div>
 {% endif %}
-
-<hr>
 
 <h2>Generate Script</h2>
 
 <form method="POST">
 
-    <input type="hidden"
-           name="action"
-           value="script">
+<input type="hidden"
+       name="action"
+       value="script">
 
-    <textarea
-        id="selected_hook"
-        name="selected_hook"
-        rows="6"
-        placeholder="Paste or select hook here"
-        required></textarea>
+<textarea
+    name="selected_hook"
+    rows="6"
+    placeholder="Paste hook here"
+    required></textarea>
 
-    <button type="submit">
-        Generate Script
-    </button>
+<button type="submit">
+Generate Script
+</button>
 
 </form>
 
@@ -116,40 +114,47 @@ Use Hooks For Script
 </div>
 {% endif %}
 
+<h2>History</h2>
+
+{% for item in history %}
+
+<div class="box">
+
+<b>{{ item.date }}</b>
+
+<br><br>
+
+Niche:
+{{ item.niche }}
+
+<br>
+
+Goal:
+{{ item.goal }}
+
+<br>
+
+Platform:
+{{ item.platform }}
+
+<br>
+
+Hook Type:
+{{ item.hook_type }}
+
+<br><br>
+
+<pre>{{ item.hooks }}</pre>
+
+</div>
+
+{% endfor %}
+
 {% if error %}
 <div class="box">
 {{ error }}
 </div>
 {% endif %}
-
-<script>
-function copyHooks() {
-    const text =
-        document.getElementById(
-            "hooksText"
-        ).innerText;
-
-    navigator.clipboard.writeText(text);
-
-    alert("Hooks copied!");
-}
-
-function useForScript() {
-    const text =
-        document.getElementById(
-            "hooksText"
-        ).innerText;
-
-    document.getElementById(
-        "selected_hook"
-    ).value = text;
-
-    window.scrollTo(
-        0,
-        document.body.scrollHeight
-    );
-}
-</script>
 
 </body>
 </html>
