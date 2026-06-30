@@ -2,32 +2,7 @@
 <html>
 <head>
     <title>Creator Engine</title>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
-
-    <style>
-        body{
-            font-family:Arial;
-            max-width:800px;
-            margin:auto;
-            padding:20px;
-        }
-
-        input,select,button,textarea{
-            width:100%;
-            padding:12px;
-            margin-top:10px;
-            box-sizing:border-box;
-        }
-
-        .box{
-            border:1px solid #ddd;
-            border-radius:10px;
-            padding:15px;
-            margin-top:20px;
-            white-space:pre-wrap;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
@@ -35,125 +10,48 @@
 
 <form method="POST">
 
-<input type="hidden"
-       name="action"
-       value="hooks">
+    <input type="text"
+           name="niche"
+           placeholder="Niche"
+           required>
 
-<input type="text"
-       name="niche"
-       placeholder="Niche"
-       required>
+    <br><br>
 
-<input type="text"
-       name="goal"
-       placeholder="Goal"
-       required>
+    <input type="text"
+           name="goal"
+           placeholder="Goal"
+           required>
 
-<select name="platform">
-    <option>Instagram Reels</option>
-    <option>TikTok</option>
-    <option>YouTube Shorts</option>
-</select>
+    <br><br>
 
-<select name="hook_type">
-    <option>Curiosity</option>
-    <option>Controversial</option>
-    <option>Story</option>
-    <option>Fear</option>
-    <option>Authority</option>
-    <option>Problem/Solution</option>
-</select>
+    <select name="platform">
+        <option>Instagram Reels</option>
+        <option>TikTok</option>
+        <option>YouTube Shorts</option>
+    </select>
 
-<button
-    type="submit"
-    name="mode"
-    value="premium">
-    Generate 3 Premium Hooks
-</button>
+    <br><br>
 
-<button
-    type="submit"
-    name="mode"
-    value="more">
-    Generate 7 More Hooks
-</button>
+    <select name="hook_type">
+        <option>Curiosity</option>
+        <option>Controversial</option>
+        <option>Story</option>
+        <option>Fear</option>
+        <option>Authority</option>
+        <option>Problem/Solution</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Generate Hooks
+    </button>
 
 </form>
 
 {% if hooks %}
-<div class="box">
 <h2>Hooks</h2>
 <pre>{{ hooks }}</pre>
-</div>
-{% endif %}
-
-<h2>Generate Script</h2>
-
-<form method="POST">
-
-<input type="hidden"
-       name="action"
-       value="script">
-
-<textarea
-    name="selected_hook"
-    rows="6"
-    placeholder="Paste hook here"
-    required></textarea>
-
-<button type="submit">
-Generate Script
-</button>
-
-</form>
-
-{% if script %}
-<div class="box">
-<h2>Script</h2>
-<pre>{{ script }}</pre>
-</div>
-{% endif %}
-
-<h2>History</h2>
-
-{% for item in history %}
-
-<div class="box">
-
-<b>{{ item.date }}</b>
-
-<br><br>
-
-Niche:
-{{ item.niche }}
-
-<br>
-
-Goal:
-{{ item.goal }}
-
-<br>
-
-Platform:
-{{ item.platform }}
-
-<br>
-
-Hook Type:
-{{ item.hook_type }}
-
-<br><br>
-
-<pre>{{ item.hooks }}</pre>
-
-</div>
-
-{% endfor %}
-
-{% if error %}
-<div class="box">
-{{ error }}
-</div>
 {% endif %}
 
 </body>
