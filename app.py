@@ -1,5 +1,6 @@
 import os
 import json
+import traceback
 from datetime import datetime
 from flask import Flask, render_template, request
 from openai import OpenAI
@@ -94,9 +95,7 @@ Number each hook from 1 to 7.
                 hooks = response.choices[0].message.content
 
                 save_history({
-                    "date": datetime.now().strftime(
-                        "%d-%m-%Y %H:%M"
-                    ),
+                    "date": datetime.now().strftime("%d-%m-%Y %H:%M"),
                     "niche": niche,
                     "goal": goal,
                     "platform": platform,
@@ -106,9 +105,7 @@ Number each hook from 1 to 7.
 
             elif action == "script":
 
-                selected_hook = request.form[
-                    "selected_hook"
-                ]
+                selected_hook = request.form["selected_hook"]
 
                 prompt = f"""
 Write a highly engaging 30-second short video script.
@@ -134,17 +131,11 @@ Requirements:
                     temperature=0.7
                 )
 
-                script = (
-                    response
-                    .choices[0]
-                    .message
-                    .content
-                )
+                script = response.choices[0].message.content
 
-    except Exception as e:
-    import traceback
-    error = traceback.format_exc()
-    print(error)
+    except Exception:
+        error = traceback.format_exc()
+        print(error)
 
     history = load_history()
 
@@ -158,7 +149,4 @@ Requirements:
 
 
 if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=5000
-    )
+    app.run(host="0.0.0.0", port=5000)
