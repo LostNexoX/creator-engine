@@ -22,14 +22,15 @@ def load_history():
 
 
 def save_history(item):
-    history = load_history()
+    try:
+        history = load_history()
+        history.insert(0, item)
+        history = history[:20]
 
-    history.insert(0, item)
-
-    history = history[:20]
-
-    with open("history.json", "w") as f:
-        json.dump(history, f, indent=2)
+        with open("history.json", "w") as f:
+            json.dump(history, f, indent=2)
+    except:
+        pass
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -114,9 +115,9 @@ Hook:
 {selected_hook}
 
 Requirements:
-- Conversational.
-- Strong payoff.
-- Suitable for Instagram Reels and TikTok.
+- Conversational
+- Strong payoff
+- Suitable for Instagram Reels and TikTok
 """
 
                 response = client.chat.completions.create(
@@ -134,8 +135,7 @@ Requirements:
                 script = response.choices[0].message.content
 
     except Exception:
-        error = traceback.format_exc()
-        print(error)
+        return f"<pre>{traceback.format_exc()}</pre>"
 
     history = load_history()
 
